@@ -1,7 +1,7 @@
-#define TITLE_TEXT_MAX 60							//Á¦¸ñ ÃÖ´ë ±ÛÀÚ ¼ö
+#define TITLE_TEXT_MAX 60							//ì œëª© ìµœëŒ€ ê¸€ì ìˆ˜
 #define MAIN_LINE_MAX 10	
-#define MAIN_TEXT_MAX 100							//³»¿ë ¶óÀÎ ´ç ÃÖ´ë ±ÛÀÚ ¼ö
-#define POST_MAX 10									//°Ô½Ã±Û ÃÖ´ë¼ö
+#define MAIN_TEXT_MAX 100							//ë‚´ìš© ë¼ì¸ ë‹¹ ìµœëŒ€ ê¸€ì ìˆ˜
+#define POST_MAX 10									//ê²Œì‹œê¸€ ìµœëŒ€ìˆ˜
 #define TIME_DIGIT 11
 #include <stdio.h>
 #include <string.h>
@@ -10,17 +10,17 @@
 #include <conio.h>
 #include <time.h>
 
-int postCount;										//µî·ÏµÇ¾îÀÖ´Â °Ô½Ã±Û ¼ö
-int lastPostNumber;									//´ÙÀ½¹ø¿¡ ÀÛ¼ºµÇ´Â °Ô½Ã±ÛÀÇ ¹øÈ£
+int postCount;										//ë“±ë¡ë˜ì–´ìˆëŠ” ê²Œì‹œê¸€ ìˆ˜
+int lastPostNumber;									//ë‹¤ìŒë²ˆì— ì‘ì„±ë˜ëŠ” ê²Œì‹œê¸€ì˜ ë²ˆí˜¸
 	
 typedef struct Post {
-	char titleText[TITLE_TEXT_MAX+1];				//Á¦¸ñ ¹®ÀÚ¿­
-	char mainText[MAIN_LINE_MAX][MAIN_TEXT_MAX+1];	//³»¿ë ¹®ÀÚ¿­
-	char time[TIME_DIGIT];							//µî·Ï ½Ã°£
-	int number;										//±Û ¹øÈ£
-	int views;										//Á¶È¸ ¼ö
-	int blind;										//ºí¶óÀÎµå ¿©ºÎ (0ÀÌ¸é ¾Æ´Ï°í 1ÀÌ¸é ºí¶óÀÎµå)
-	int curLine;									//ÀÛ¼ºµÈ ³»¿ëÀÇ ¶óÀÎ ¼ö
+	char titleText[TITLE_TEXT_MAX+1];				//ì œëª© ë¬¸ìì—´
+	char mainText[MAIN_LINE_MAX][MAIN_TEXT_MAX+1];	//ë‚´ìš© ë¬¸ìì—´
+	char time[TIME_DIGIT];							//ë“±ë¡ ì‹œê°„
+	int number;										//ê¸€ ë²ˆí˜¸
+	int views;										//ì¡°íšŒ ìˆ˜
+	int blind;										//ë¸”ë¼ì¸ë“œ ì—¬ë¶€ (0ì´ë©´ ì•„ë‹ˆê³  1ì´ë©´ ë¸”ë¼ì¸ë“œ)
+	int curLine;									//ì‘ì„±ëœ ë‚´ìš©ì˜ ë¼ì¸ ìˆ˜
 
 }Post;
 
@@ -30,6 +30,7 @@ void postRegist(Post* _Post);
 void postEdit(Post* _Post);
 void postView(Post* _Post);
 void postDelete(Post* _Post);
+void postRecovery(Post* _Post);
 
 void postInitializing(Post* _Post);
 void currentTime(char* timeStr);
