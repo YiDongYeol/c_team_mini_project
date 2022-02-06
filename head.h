@@ -1,39 +1,64 @@
-#define TITLE_TEXT_MAX 60							//ì œëª© ìµœëŒ€ ê¸€ì ìˆ˜
+#define TITLE_TEXT_MAX 60							//Á¦¸ñ ÃÖ´ë ±ÛÀÚ ¼ö
 #define MAIN_LINE_MAX 10	
-#define MAIN_TEXT_MAX 100							//ë‚´ìš© ë¼ì¸ ë‹¹ ìµœëŒ€ ê¸€ì ìˆ˜
-#define POST_MAX 10									//ê²Œì‹œê¸€ ìµœëŒ€ìˆ˜
+#define MAIN_TEXT_MAX 100							//³»¿ë ¶óÀÎ ´ç ÃÖ´ë ±ÛÀÚ ¼ö
+#define POST_MAX 10									//°Ô½Ã±Û ÃÖ´ë¼ö
+#define USER_MAX 10
 #define TIME_DIGIT 11
+#define ID_MAX 11
+#define PW_MAX 21
+#define IS_NORMAL 0
+#define IS_BLIND 1
+#define IS_NOTICE 2
+#define IS_USER 1
+#define IS_ADMIN 0
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <windows.h>
+#include <windows.h>	
 #include <conio.h>
 #include <time.h>
 
-int postCount;										//ë“±ë¡ë˜ì–´ìˆëŠ” ê²Œì‹œê¸€ ìˆ˜
-int lastPostNumber;									//ë‹¤ìŒë²ˆì— ì‘ì„±ë˜ëŠ” ê²Œì‹œê¸€ì˜ ë²ˆí˜¸
-	
+char currentUser[ID_MAX];							//ÇöÀç Á¢¼ÓÇÑ ¾ÆÀÌµğ
+int currentUserType;								//ÇöÀç À¯ÀúÀÇ µî±Ş
+int postCount;										//µî·ÏµÇ¾îÀÖ´Â °Ô½Ã±Û ¼ö
+int lastPostNumber;									//´ÙÀ½¹ø¿¡ ÀÛ¼ºµÇ´Â °Ô½Ã±ÛÀÇ ¹øÈ£
+int userCount;										//ÇöÀç ÀúÀåµÈ À¯Àú ¼ö
+
+typedef struct User {
+	char ID[ID_MAX];								//ID ¹®ÀÚ¿­
+	char PW[PW_MAX];								//PW ¹®ÀÚ¿­
+	int blind;
+	int type;										//À¯ÀúÅ¸ÀÔ (0ÀÌ¸é °ü¸®ÀÚ 1ÀÌ¸é ÀÏ¹İ)
+}User;
 typedef struct Post {
-	char titleText[TITLE_TEXT_MAX+1];				//ì œëª© ë¬¸ìì—´
-	char mainText[MAIN_LINE_MAX][MAIN_TEXT_MAX+1];	//ë‚´ìš© ë¬¸ìì—´
-	char time[TIME_DIGIT];							//ë“±ë¡ ì‹œê°„
-	int number;										//ê¸€ ë²ˆí˜¸
-	int views;										//ì¡°íšŒ ìˆ˜
-	int blind;										//ë¸”ë¼ì¸ë“œ ì—¬ë¶€ (0ì´ë©´ ì•„ë‹ˆê³  1ì´ë©´ ë¸”ë¼ì¸ë“œ)
-	int curLine;									//ì‘ì„±ëœ ë‚´ìš©ì˜ ë¼ì¸ ìˆ˜
+	char titleText[TITLE_TEXT_MAX+1];				//Á¦¸ñ ¹®ÀÚ¿­
+	char mainText[MAIN_LINE_MAX][MAIN_TEXT_MAX+1];	//³»¿ë ¹®ÀÚ¿­
+	char time[TIME_DIGIT];							//µî·Ï ½Ã°£ ¹®ÀÚ¿­
+	char ID[ID_MAX];								//ÀÛ¼ºÇÑ ¾ÆÀÌµğ ¹®ÀÚ¿­
+	int number;										//±Û ¹øÈ£
+	int views;										//Á¶È¸ ¼ö
+	int type;										//±Û Å¸ÀÔ (0ÀÌ¸é ÀÏ¹İ 1ÀÌ¸é ºí¶óÀÎµå 2ÀÌ¸é °øÁö»çÇ×)
+	int curLine;									//ÀÛ¼ºµÈ ³»¿ëÀÇ ¶óÀÎ ¼ö
 
 }Post;
 
-int menu();
+int loginMenu();
+void userRegist(User* _User);
+int login(User* _User);
 
+int menu();
 void postRegist(Post* _Post);
 void postEdit(Post* _Post);
 void postView(Post* _Post);
 void postDelete(Post* _Post);
 void postRecovery(Post* _Post);
+int userEdit(User* _User);
+void userManage(User* _User);
+int userBlind(User* _User);
 
 void postInitializing(Post* _Post);
+void userInitializing(User* _User);
 void currentTime(char* timeStr);
 void timeDisplay(char* timeStr, char* timeDis);
 
-void sample(Post* _Post);
+void sample(Post* _Post, User* _User);

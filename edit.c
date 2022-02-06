@@ -5,11 +5,10 @@ void postEdit(Post* _Post) {
 	int cur_x, cur_y, select, index;
 	char timeDis[15];
 	Post backup;
-
 	printf(" 글번호                                  제목                                시간         조회수\n");
 	printf("===================================================================================================\n");
 	for (int i = 0; i < postCount; i++) {
-		if (_Post[i].blind == 1)
+		if (_Post[i].type == IS_BLIND || strcmp(_Post[i].ID, currentUser))
 			continue;
 		timeDisplay(_Post[i].time, timeDis);
 		printf(" %d    %-40s%35s%9d\n", _Post[i].number, _Post[i].titleText, timeDis, _Post[i].views);
@@ -31,7 +30,7 @@ void postEdit(Post* _Post) {
 	cur_x = strlen(_Post[index].mainText[cur_y - MAIN_START_Y]) + MAIN_START_X;
 	while (1) {
 		system("cls");
-		printf(" 글 작성 \n");
+		printf(" 글 수정 \n");
 		printf("==========================================================\n");
 		printf(" 제목 : %s\n", _Post[index].titleText);
 		printf("==========================================================\n");
