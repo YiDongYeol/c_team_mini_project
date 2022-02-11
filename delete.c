@@ -1,31 +1,24 @@
 #include "head.h"
 
 
-Post* postDelete(Post* _Post)
+void postDelete(Post* _Post)
 {
-	Post* cur=_Post;
-	Post* pre=0;
 	int del_selc, del_how = 1;
+	int j = 0;
 	char timeDis[15];
-
 	printf(" 글번호                                  제목                                시간         조회수\n");
 	printf("===================================================================================================\n");
 	for (int i = 0; i < postCount; i++) {
 		if (currentUserType == IS_USER) {
-			if (cur->type == IS_BLIND || strcmp(cur->ID, currentUser)) {
-				cur = cur->nextPostAddress;
+			if (_Post[i].type == IS_BLIND || strcmp(_Post[i].ID, currentUser))
 				continue;
-			}
 		}
 		else {
-			if (cur->type == IS_BLIND) {
-				cur = cur->nextPostAddress;
+			if (_Post[i].type == IS_BLIND)
 				continue;
-			}
 		}
-		timeDisplay(cur->time, timeDis);
-		printf(" %d    %-40s%35s%9d\n", cur->number, cur->titleText, timeDis, cur->views);
-		cur = cur->nextPostAddress;
+		timeDisplay(_Post[i].time, timeDis);
+		printf(" %d    %-40s%35s%9d\n", _Post[i].number, _Post[i].titleText, timeDis, _Post[i].views);
 	}
 	printf("===================================================================================================\n");
 
@@ -38,42 +31,43 @@ Post* postDelete(Post* _Post)
 		printf(">>");
 		scanf("%d", &del_how);
 	}
-	cur = _Post;
+
 	switch (del_how) {
 	case 1:
+
 		for (int i = 0; i < postCount; i++) {
-			if (cur->number == del_selc) {
-				if (cur->type == IS_NOTICE) {
-					printf("공지는 블라인드 할 수 없습니다.\n");
-					system("pause");
-				}
-				else 
-					cur->type = IS_BLIND;
+			if (_Post[i].number == del_selc) {
+				_Post[i].type = IS_BLIND;
 
 				break;
 			}
-			cur = cur->nextPostAddress;
 		}
 
 		break;
-
+		
 	case 2:
 
 		for (int i = 0; i < postCount; i++) {
-			if (cur->number == del_selc) {
-				if (i == 0)
-					_Post = _Post->nextPostAddress;
-				else
-					pre->nextPostAddress = cur->nextPostAddress;
-				free(cur);
+			if (_Post[i].number == del_selc) {
+				for (int j = i; j < postCount - 1; j++) {
+					strcpy(_Post[j].titleText, _Post[j + 1].titleText);
+					strcpy(_Post[j].time, _Post[j + 1].time);
+					strcpy(_Post[j].ID, _Post[j + 1].ID);
+					for (int k = 0; k < MAIN_LINE_MAX; k++)
+						strcpy(_Post[j].mainText[k], _Post[j+1].mainText[k]);
+					_Post[j].number = _Post[j + 1].number;
+					_Post[j].views = _Post[j + 1].views;
+					_Post[j].type = _Post[j + 1].type;
+					_Post[j].curLine = _Post[j + 1].curLine;
+				}
 				postCount--;
+				postInitializing(&(_Post[postCount]));
+
 				break;
 			}
-			pre = cur;
-			cur = cur->nextPostAddress;
 		}
-
+		
 		break;
 	}
-	return _Post;
+
 }

@@ -1,6 +1,7 @@
 #include "head.h"
 #include "board.h"
 
+
 int input(Post* _Post, int* cur_x, int* cur_y) {
 	int c, i = 0, j = 0;
 	c = _getch();
@@ -62,10 +63,8 @@ int input(Post* _Post, int* cur_x, int* cur_y) {
 			(*cur_y) = _Post->curLine + MAIN_START_Y - 1;
 			break;
 		case 83: //delete
-			if (*cur_y == TITLE_START_Y) {
+			if (*cur_y == TITLE_START_Y)
 				deleteChar(_Post->titleText, (*cur_x) - TITLE_START_X);
-				break;
-			}
 			else {
 				if (_Post->mainText[(*cur_y) - MAIN_START_Y][(*cur_x) - MAIN_START_X] == '\0') {
 					if ((*cur_y) - MAIN_START_Y == _Post->curLine - 1)
@@ -75,7 +74,6 @@ int input(Post* _Post, int* cur_x, int* cur_y) {
 					break;
 				}
 				deleteChar(_Post->mainText[(*cur_y) - MAIN_START_Y], (*cur_x) - MAIN_START_X);
-				break;
 			}
 		default:
 			break;
@@ -150,8 +148,8 @@ int input(Post* _Post, int* cur_x, int* cur_y) {
 }
 void insertChar(char* string, char c, int index) {
 	for (int i = strlen(string) + 1; i > index; i--)
-		*(string + i) = *(string + i - 1);
-	*(string + index) = c;
+		string[i] = string[i - 1];
+	string[index] = c;
 }
 void insertLine(char mainText[][MAIN_TEXT_MAX + 1], int index, int* curLine) {
 	for (int i = *curLine; i > index; i--)
@@ -160,20 +158,16 @@ void insertLine(char mainText[][MAIN_TEXT_MAX + 1], int index, int* curLine) {
 	(*curLine)++;
 }
 void deleteChar(char* string, int index) {
-	if (*(string + index) & 0x80) {
-		if (*(string + index + 2) == '\0') {
-			(*(string + index)) = '\0';
-			return;
-		}
-		while (*(string + index) != '\0') {
-			*(string + index) = *(string + index + 2);
-			*(string + index + 1) = *(string + index + 3);
+	if (string[index] & 0x80) {
+		while (string[index] != '\0') {
+			string[index] = string[index + 2];
+			string[index + 1] = string[index + 3];
 			index++;
 		}
 	}
 	else {
-		while (*(string + index) != '\0') {
-			*(string + index) = *(string + index + 1);
+		while (string[index] != '\0') {
+			string[index] = string[index + 1];
 			index++;
 		}
 	}
