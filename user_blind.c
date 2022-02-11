@@ -1,17 +1,16 @@
 #include "head.h"
 
 int userBlind(User* _User) {
-	int currentUserIndex;
 	char inputPW[21];
+	User* cur=_User;
 	for (int i = 0; i < userCount; i++) {
-		if (!(strcmp(_User[i].ID, currentUser))) {
-			currentUserIndex = i;
+		if (!(strcmp(cur->ID, currentUser)))
 			break;
-		}
+		cur = cur->nextUserAddress;
 	}
 	printf("PW = ");
 	scanf("%s", inputPW);
-	if (strcmp(_User[currentUserIndex].PW, inputPW)) {
+	if (strcmp(cur->PW, inputPW)) {
 		printf("패스워드가 틀립니다.\n");
 		system("pause");
 		return 0;
@@ -20,7 +19,7 @@ int userBlind(User* _User) {
 	switch (_getch()) {
 	case 'y':
 	case 'Y':
-		_User[currentUserIndex].blind = !(_User[currentUserIndex].blind);
+		cur->blind = IS_BLIND;
 		return 1;
 	}
 	return 0;

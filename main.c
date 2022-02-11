@@ -1,12 +1,14 @@
 #include "head.h"
 
 void main() {
-	Post _Post[POST_MAX];
-	User _User[USER_MAX];
+	Post *_Post=(Post*)malloc(sizeof(Post));
+	User *_User=(User*)malloc(sizeof(User));
 	int loginSuccess = 0;
 	int flag = 0;
 	sample(_Post, _User);
+
 	while (1) {
+		loginSuccess = 0;
 		while (1) {
 			system("cls");
 			switch (loginMenu()) {
@@ -23,6 +25,7 @@ void main() {
 				break;
 		}
 		while (1) {
+			flag = 0;
 			system("cls");
 			switch (menu()) {
 			case 1:
@@ -35,7 +38,7 @@ void main() {
 				postView(_Post);
 				break;
 			case 4:
-				postDelete(_Post);
+				_Post=postDelete(_Post);
 				break;
 			case 5:
 				if (currentUserType == IS_ADMIN)
@@ -45,7 +48,7 @@ void main() {
 				break;
 			case 6:
 				if (currentUserType == IS_ADMIN)
-					userManage(_User);
+					_User=userManage(_User);
 				else
 					flag = userBlind(_User);
 				break;
